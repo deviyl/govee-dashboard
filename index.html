@@ -1,6 +1,6 @@
-<body style="font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:40px;">
-  <h1>Govee Dashboard</h1>
-  <div id="sensors"></div>
+<body style="font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; margin: 40px; background-color: #f4f4f4;">
+  <h1 style="text-align: center; color: #333;">Govee Dashboard</h1>
+  <div id="sensors" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;"></div>
 
   <script>
     const NUM_SENSORS = 6;
@@ -18,12 +18,23 @@
           if (!sensor) continue;
 
           const sensorDiv = document.createElement("div");
-          sensorDiv.style.marginBottom = "10px";
+          sensorDiv.style.width = "150px";
+          sensorDiv.style.height = "150px";
+          sensorDiv.style.padding = "10px";
+          sensorDiv.style.border = "4px solid white";
+          sensorDiv.style.borderRadius = "10px";
+          sensorDiv.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
+          sensorDiv.style.backgroundColor = "#e0e0e0";
+          sensorDiv.style.textAlign = "center";
+          sensorDiv.style.color = "#333";
+          sensorDiv.style.fontWeight = "bold";
+
           sensorDiv.innerHTML = `
             <h3>Sensor ${i}</h3>
             <p>Temperature: ${sensor.temperature ?? "--"} °C</p>
             <p>Humidity: ${sensor.humidity ?? "--"} %</p>
           `;
+
           container.appendChild(sensorDiv);
         }
       } catch (err) {
