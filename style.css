@@ -28,7 +28,7 @@ h1 {
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between; /* push label to bottom */
   align-items: center;
   padding: 10px;
   text-align: center;
@@ -58,4 +58,11 @@ h1 {
 .sensor-humidity {
   font-size: 1.1em;
   color: #004d40;
+}
+
+.sensor-label {
+  font-size: 0.9em;
+  color: #004d40;
+  text-align: center;
+  margin-top: 4px;
 }
