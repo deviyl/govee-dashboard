@@ -33,7 +33,8 @@ h1 {
 /* Sensor grid container */
 #sensors {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+  grid-template-columns: repeat(3, 1fr); /* strict 3 columns */
+  grid-template-rows: repeat(2, 1fr);   /* strict 2 rows */
   gap: 20px;
   justify-items: center;
   align-items: center;
@@ -69,7 +70,7 @@ h1 {
 .sensor-temp {
   font-size: 1.9em;
   margin-bottom: 4px;
-  color: #00796b; /* revert to original green */
+  color: #00796b;
 }
 
 /* Divider line, centered */
