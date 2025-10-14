@@ -14,23 +14,29 @@
 
   <script>
     const NUM_SENSORS = 6;
+    const container = document.getElementById("sensors");
+
+    // Store previous values to animate changes
+    let previousData = {};
 
     async function fetchData() {
       try {
         const response = await fetch("https://goveedatarequest.netlify.app/.netlify/functions/govee-data");
         const data = await response.json();
 
-        const container = document.getElementById("sensors");
         container.innerHTML = "";
 
         for (let i = 1; i <= NUM_SENSORS; i++) {
           const sensor = data[`SENSOR_${i}`];
           if (!sensor) continue;
 
+          const temp = parseFloat(sensor.temperature ?? 0);
+          const humidity = parseInt(sensor.humidity ?? 0);
+
           const sensorDiv = document.createElement("div");
           sensorDiv.style.width = "100%";
           sensorDiv.style.maxWidth = "180px";
-          sensorDiv.style.aspectRatio = "1 / 1"; // keep square
+          sensorDiv.style.aspectRatio = "1 / 1";
           sensorDiv.style.borderRadius = "12px";
           sensorDiv.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
           sensorDiv.style.background = "linear-gradient(135deg, #e0f7fa, #b2ebf2)";
@@ -44,7 +50,6 @@
           sensorDiv.style.color = "#00796b";
           sensorDiv.style.transition = "transform 0.2s ease";
 
-          // optional hover effect
           sensorDiv.addEventListener("mouseover", () => {
             sensorDiv.style.transform = "scale(1.05)";
           });
@@ -52,24 +57,42 @@
             sensorDiv.style.transform = "scale(1)";
           });
 
-          const temp = sensor.temperature ?? "--";
-          const [whole, decimal] = temp.toString().split(".");
-
           sensorDiv.innerHTML = `
-            <div style="font-size: 2.5em; line-height: 1;">
-              ${whole}<span style="font-size: 1em;">.${decimal ?? '0'}°F</span>
-            </div>
+            <div style="font-size: 2.5em; line-height: 1;" id="temp_${i}">${temp}°F</div>
             <div style="width: 60%; height: 2px; background-color: #00796b; margin: 6px 0; border-radius: 1px;"></div>
-            <div style="font-size: 1.1em; color: #004d40;">
-              Humidity: ${sensor.humidity ?? "--"}%
-            </div>
+            <div style="font-size: 1.1em; color: #004d40;" id="hum_${i}">${humidity}%</div>
           `;
 
           container.appendChild(sensorDiv);
+
+          // Animate numbers from previous to current
+          animateValue(`temp_${i}`, previousData[`temp_${i}`] ?? temp, temp, 600);
+          animateValue(`hum_${i}`, previousData[`hum_${i}`] ?? humidity, humidity, 600);
+
+          previousData[`temp_${i}`] = temp;
+          previousData[`hum_${i}`] = humidity;
         }
       } catch (err) {
         console.error("Error fetching sensor data:", err);
       }
+    }
+
+    function animateValue(id, start, end, duration) {
+      if (start === end) return;
+      const element = document.getElementById(id);
+      const range = end - start;
+      let startTime = null;
+
+      function step(timestamp) {
+        if (!startTime) startTime = timestamp;
+        const progress = Math.min((timestamp - startTime) / duration, 1);
+        element.textContent = Math.round(start + range * progress) + (id.startsWith("temp") ? "°F" : "%");
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      }
+
+      requestAnimationFrame(step);
     }
 
     fetchData();
