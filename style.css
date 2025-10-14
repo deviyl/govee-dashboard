@@ -106,3 +106,22 @@ h1 {
   text-align: center;
   color: #004d40;
 }
+
+.home-link {
+  position: fixed;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1em;
+  transition: background 0.3s;
+}
+
+.home-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
