@@ -1,7 +1,5 @@
-const fetch = require("node-fetch"); // Netlify provides fetch natively in modern runtimes, but this is safe
-
 exports.handler = async function(event, context) {
-  const API_KEY = process.env.GOVEE_API_KEY; // set this in Netlify environment variables
+  const API_KEY = process.env.GOVEE_API_KEY;
   const DEVICE_ID = "EB:BC:C7:90:81:46:28:6E";
   const SKU = "H5110";
 
