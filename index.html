@@ -1,21 +1,37 @@
 <body style="font-family:system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;margin:40px;">
   <h1>Govee Dashboard</h1>
-  <p>Temperature: <span id="temp">--</span> °C</p>
-  <p>Humidity: <span id="humidity">--</span> %</p>
+  <div id="sensors"></div>
 
   <script>
+    const NUM_SENSORS = 6;
+
     async function fetchData() {
       try {
         const response = await fetch("https://goveedatarequest.netlify.app/.netlify/functions/govee-data");
         const data = await response.json();
-        document.getElementById("temp").textContent = data.temperature;
-        document.getElementById("humidity").textContent = data.humidity;
+
+        const container = document.getElementById("sensors");
+        container.innerHTML = "";
+
+        for (let i = 1; i <= NUM_SENSORS; i++) {
+          const sensor = data[`SENSOR_${i}`];
+          if (!sensor) continue;
+
+          const sensorDiv = document.createElement("div");
+          sensorDiv.style.marginBottom = "10px";
+          sensorDiv.innerHTML = `
+            <h3>Sensor ${i}</h3>
+            <p>Temperature: ${sensor.temperature ?? "--"} °C</p>
+            <p>Humidity: ${sensor.humidity ?? "--"} %</p>
+          `;
+          container.appendChild(sensorDiv);
+        }
       } catch (err) {
-        console.error("Error fetching data:", err);
+        console.error("Error fetching sensor data:", err);
       }
     }
 
     fetchData();
-    setInterval(fetchData, 60000); // update every 60 seconds
+    setInterval(fetchData, 60000); // refresh every 60 seconds
   </script>
 </body>
