@@ -16,6 +16,16 @@
     const container = document.getElementById("sensors");
     let previousData = {};
 
+    // Custom labels for sensors (in order)
+    const SENSOR_LABELS = [
+      "Refrigerator",
+      "Freezer",
+      "Garage Fridge",
+      "Eric III",
+      "Emily",
+      "GeauxEngrave"
+    ];
+
     async function fetchData() {
       try {
         const response = await fetch("https://govee-data.deviyl.workers.dev/");
@@ -41,6 +51,7 @@
             <div class="sensor-temp" id="temp_${i}">${temp}°F</div>
             <div class="sensor-divider"></div>
             <div class="sensor-humidity" id="hum_${i}">${humidity}%</div>
+            <div class="sensor-label">${SENSOR_LABELS[i - 1] ?? `SENSOR_${i}`}</div>
           `;
 
           container.appendChild(sensorDiv);
