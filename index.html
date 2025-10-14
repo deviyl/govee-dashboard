@@ -1,6 +1,16 @@
 <body style="font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; margin: 40px; background-color: #f4f4f4;">
   <h1 style="text-align: center; color: #333;">Govee Dashboard</h1>
-  <div id="sensors" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; justify-items: center;"></div>
+
+  <div id="sensors" style="
+    display: grid; 
+    grid-template-columns: repeat(3, 1fr); 
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px; 
+    justify-items: center;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+  "></div>
 
   <script>
     const NUM_SENSORS = 6;
@@ -18,30 +28,40 @@
           if (!sensor) continue;
 
           const sensorDiv = document.createElement("div");
-          sensorDiv.style.width = "150px";
-          sensorDiv.style.height = "150px";
-          sensorDiv.style.border = "3px solid white";
-          sensorDiv.style.borderRadius = "10px";
-          sensorDiv.style.boxShadow = "0 0 5px rgba(0,0,0,0.2)";
-          sensorDiv.style.backgroundColor = "#e0e0e0";
+          sensorDiv.style.width = "100%";
+          sensorDiv.style.maxWidth = "180px";
+          sensorDiv.style.aspectRatio = "1 / 1"; // keep square
+          sensorDiv.style.borderRadius = "12px";
+          sensorDiv.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+          sensorDiv.style.background = "linear-gradient(135deg, #e0f7fa, #b2ebf2)";
           sensorDiv.style.display = "flex";
           sensorDiv.style.flexDirection = "column";
           sensorDiv.style.justifyContent = "center";
           sensorDiv.style.alignItems = "center";
+          sensorDiv.style.padding = "10px";
           sensorDiv.style.textAlign = "center";
           sensorDiv.style.fontWeight = "bold";
+          sensorDiv.style.color = "#00796b";
+          sensorDiv.style.transition = "transform 0.2s ease";
 
-          // split temperature into whole number and decimal
+          // optional hover effect
+          sensorDiv.addEventListener("mouseover", () => {
+            sensorDiv.style.transform = "scale(1.05)";
+          });
+          sensorDiv.addEventListener("mouseout", () => {
+            sensorDiv.style.transform = "scale(1)";
+          });
+
           const temp = sensor.temperature ?? "--";
           const [whole, decimal] = temp.toString().split(".");
 
           sensorDiv.innerHTML = `
-            <div style="flex: 1; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+            <div style="font-size: 2.5em; line-height: 1;">
               ${whole}<span style="font-size: 1em;">.${decimal ?? '0'}°F</span>
             </div>
-            <hr style="width: 80%; border: 1px solid #999; margin: 0;">
-            <div style="flex: 1; display: flex; align-items: center; justify-content: center; font-size: 1.2em;">
-              ${sensor.humidity ?? "--"}%
+            <div style="width: 60%; height: 2px; background-color: #00796b; margin: 6px 0; border-radius: 1px;"></div>
+            <div style="font-size: 1.1em; color: #004d40;">
+              Humidity: ${sensor.humidity ?? "--"}%
             </div>
           `;
 
@@ -53,6 +73,6 @@
     }
 
     fetchData();
-    setInterval(fetchData, 60000); // refresh every 60 seconds
+    setInterval(fetchData, 60000);
   </script>
 </body>
