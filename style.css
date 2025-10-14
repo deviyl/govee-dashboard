@@ -42,13 +42,16 @@ h1 {
   margin: 0 auto 40px;
 }
 
-/* Sensor card */
+/* Sensor card with 3D multi-border look */
 .sensor-card {
   width: 100%;
-  max-width: 135px; /* 25% smaller than 180px */
+  max-width: 135px; /* 25% smaller */
   aspect-ratio: 1 / 1;
   border-radius: 12px;
-  border: 8px solid #222; /* dark gray border */
+  border: 4px solid #000; /* main black border */
+  box-shadow:
+    inset 0 0 0 2px #888,   /* inner gray border */
+    0 0 0 1px #fff;         /* outer white outline */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,10 +61,10 @@ h1 {
   text-align: center;
   background-color: #e0e0e0;
   font-weight: bold;
-  color: #00796b; /* default color for text */
+  color: #00796b;
 }
 
-/* Add subtle black text shadow to improve readability */
+/* Add subtle black text shadow for readability */
 .sensor-card > * {
   text-shadow: 0 1px 2px rgba(0,0,0,0.5);
 }
