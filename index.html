@@ -1,16 +1,9 @@
-<body style="font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; margin: 40px; background-color: #f4f4f4;">
-  <h1 style="text-align: center; color: #333;">Govee Dashboard</h1>
-
-  <div id="sensors" style="
-    display: grid; 
-    grid-template-columns: repeat(3, 1fr); 
-    grid-template-rows: repeat(2, 1fr);
-    gap: 20px; 
-    justify-items: center;
-    align-items: center;
-    max-width: 600px;
-    margin: 0 auto;
-  "></div>
+<head>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Govee Dashboard</h1>
+  <div id="sensors"></div>
 
   <script>
     const NUM_SENSORS = 6;
@@ -28,43 +21,20 @@
           const sensor = data[`SENSOR_${i}`];
           if (!sensor) continue;
 
-          // Round temperature to 1 decimal place
           const temp = parseFloat((sensor.temperature ?? 0).toFixed(1));
           const humidity = parseFloat((sensor.humidity ?? 0).toFixed(1));
 
           const sensorDiv = document.createElement("div");
-          sensorDiv.style.width = "100%";
-          sensorDiv.style.maxWidth = "180px";
-          sensorDiv.style.aspectRatio = "1 / 1";
-          sensorDiv.style.borderRadius = "12px";
-          sensorDiv.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
-          sensorDiv.style.background = "linear-gradient(135deg, #e0f7fa, #b2ebf2)";
-          sensorDiv.style.display = "flex";
-          sensorDiv.style.flexDirection = "column";
-          sensorDiv.style.justifyContent = "center";
-          sensorDiv.style.alignItems = "center";
-          sensorDiv.style.padding = "10px";
-          sensorDiv.style.textAlign = "center";
-          sensorDiv.style.fontWeight = "bold";
-          sensorDiv.style.color = "#00796b";
-          sensorDiv.style.transition = "transform 0.2s ease";
-
-          sensorDiv.addEventListener("mouseover", () => {
-            sensorDiv.style.transform = "scale(1.05)";
-          });
-          sensorDiv.addEventListener("mouseout", () => {
-            sensorDiv.style.transform = "scale(1)";
-          });
+          sensorDiv.className = "sensor-card";
 
           sensorDiv.innerHTML = `
-            <div style="font-size: 2.5em; line-height: 1;" id="temp_${i}">${temp}°F</div>
-            <div style="width: 60%; height: 2px; background-color: #00796b; margin: 6px 0; border-radius: 1px;"></div>
-            <div style="font-size: 1.1em; color: #004d40;" id="hum_${i}">${humidity}%</div>
+            <div class="sensor-temp" id="temp_${i}">${temp}°F</div>
+            <div class="sensor-divider"></div>
+            <div class="sensor-humidity" id="hum_${i}">${humidity}%</div>
           `;
 
           container.appendChild(sensorDiv);
 
-          // Animate values with decimal support
           animateValue(`temp_${i}`, previousData[`temp_${i}`] ?? temp, temp, 600, 1);
           animateValue(`hum_${i}`, previousData[`hum_${i}`] ?? humidity, humidity, 600, 1);
 
