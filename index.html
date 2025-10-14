@@ -1,6 +1,6 @@
 <body style="font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif; margin: 40px; background-color: #f4f4f4;">
   <h1 style="text-align: center; color: #333;">Govee Dashboard</h1>
-  <div id="sensors" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;"></div>
+  <div id="sensors" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; justify-items: center;"></div>
 
   <script>
     const NUM_SENSORS = 6;
@@ -20,19 +20,29 @@
           const sensorDiv = document.createElement("div");
           sensorDiv.style.width = "150px";
           sensorDiv.style.height = "150px";
-          sensorDiv.style.padding = "10px";
-          sensorDiv.style.border = "4px solid white";
+          sensorDiv.style.border = "3px solid white";
           sensorDiv.style.borderRadius = "10px";
-          sensorDiv.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
+          sensorDiv.style.boxShadow = "0 0 5px rgba(0,0,0,0.2)";
           sensorDiv.style.backgroundColor = "#e0e0e0";
+          sensorDiv.style.display = "flex";
+          sensorDiv.style.flexDirection = "column";
+          sensorDiv.style.justifyContent = "center";
+          sensorDiv.style.alignItems = "center";
           sensorDiv.style.textAlign = "center";
-          sensorDiv.style.color = "#333";
           sensorDiv.style.fontWeight = "bold";
 
+          // split temperature into whole number and decimal
+          const temp = sensor.temperature ?? "--";
+          const [whole, decimal] = temp.toString().split(".");
+
           sensorDiv.innerHTML = `
-            <h3>Sensor ${i}</h3>
-            <p>Temperature: ${sensor.temperature ?? "--"} °F</p>
-            <p>Humidity: ${sensor.humidity ?? "--"} %</p>
+            <div style="flex: 1; display: flex; align-items: center; justify-content: center; font-size: 2em;">
+              ${whole}<span style="font-size: 1em;">.${decimal ?? '0'}°F</span>
+            </div>
+            <hr style="width: 80%; border: 1px solid #999; margin: 0;">
+            <div style="flex: 1; display: flex; align-items: center; justify-content: center; font-size: 1.2em;">
+              ${sensor.humidity ?? "--"}%
+            </div>
           `;
 
           container.appendChild(sensorDiv);
