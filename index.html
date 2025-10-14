@@ -32,6 +32,11 @@
 
           const sensorDiv = document.createElement("div");
           sensorDiv.className = "sensor-card";
+
+          // Apply temperature-based color tint
+          const color = getTemperatureColor(temp);
+          sensorDiv.style.background = `linear-gradient(135deg, ${color.light}, ${color.main})`;
+
           sensorDiv.innerHTML = `
             <div class="sensor-temp" id="temp_${i}">${temp}°F</div>
             <div class="sensor-divider"></div>
@@ -40,7 +45,6 @@
 
           container.appendChild(sensorDiv);
 
-          // animate temperature and humidity values smoothly
           animateValue(`temp_${i}`, previousData[`temp_${i}`] ?? temp, temp, 600, 1);
           animateValue(`hum_${i}`, previousData[`hum_${i}`] ?? humidity, humidity, 600, 1);
 
@@ -67,6 +71,15 @@
       }
 
       requestAnimationFrame(step);
+    }
+
+    // Map temperature to color palette
+    function getTemperatureColor(temp) {
+      if (isNaN(temp)) return { light: "#e0f7fa", main: "#b2ebf2" }; // default
+      if (temp < 60) return { light: "#d0e8ff", main: "#90caf9" };   // cool blues
+      if (temp < 75) return { light: "#e0f7fa", main: "#b2ebf2" };   // neutral aqua
+      if (temp < 85) return { light: "#fff3e0", main: "#ffcc80" };   // warm orange
+      return { light: "#ffebee", main: "#ef9a9a" };                  // hot red
     }
 
     fetchData();
