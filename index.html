@@ -15,8 +15,6 @@
   <script>
     const NUM_SENSORS = 6;
     const container = document.getElementById("sensors");
-
-    // Store previous values to animate changes
     let previousData = {};
 
     async function fetchData() {
@@ -57,19 +55,27 @@
             sensorDiv.style.transform = "scale(1)";
           });
 
+          // Split temperature into whole and decimal
+          const [whole, decimal] = temp.toFixed(1).split(".");
+
           sensorDiv.innerHTML = `
-            <div style="font-size: 2.5em; line-height: 1;" id="temp_${i}">${temp}°F</div>
+            <div style="position: relative; font-size: 2.5em; line-height: 1;">
+              <span id="temp_whole_${i}">${whole}</span>
+              <span id="temp_decimal_${i}" style="font-size: 1em; position: absolute; top: 0.2em; right: -1.2em;">.${decimal}°F</span>
+            </div>
             <div style="width: 60%; height: 2px; background-color: #00796b; margin: 6px 0; border-radius: 1px;"></div>
             <div style="font-size: 1.1em; color: #004d40;" id="hum_${i}">${humidity}%</div>
           `;
 
           container.appendChild(sensorDiv);
 
-          // Animate numbers from previous to current
-          animateValue(`temp_${i}`, previousData[`temp_${i}`] ?? temp, temp, 600);
+          // Animate whole and decimal separately
+          animateValue(`temp_whole_${i}`, previousData[`temp_whole_${i}`] ?? parseInt(whole), parseInt(whole), 600);
+          animateValue(`temp_decimal_${i}`, previousData[`temp_decimal_${i}`] ?? parseInt(decimal), parseInt(decimal), 600, true);
           animateValue(`hum_${i}`, previousData[`hum_${i}`] ?? humidity, humidity, 600);
 
-          previousData[`temp_${i}`] = temp;
+          previousData[`temp_whole_${i}`] = parseInt(whole);
+          previousData[`temp_decimal_${i}`] = parseInt(decimal);
           previousData[`hum_${i}`] = humidity;
         }
       } catch (err) {
@@ -77,7 +83,7 @@
       }
     }
 
-    function animateValue(id, start, end, duration) {
+    function animateValue(id, start, end, duration, isDecimal=false) {
       if (start === end) return;
       const element = document.getElementById(id);
       const range = end - start;
@@ -86,10 +92,13 @@
       function step(timestamp) {
         if (!startTime) startTime = timestamp;
         const progress = Math.min((timestamp - startTime) / duration, 1);
-        element.textContent = Math.round(start + range * progress) + (id.startsWith("temp") ? "°F" : "%");
-        if (progress < 1) {
-          requestAnimationFrame(step);
+        const value = Math.round(start + range * progress);
+        if (isDecimal) {
+          element.textContent = `.${value}°F`;
+        } else {
+          element.textContent = value;
         }
+        if (progress < 1) requestAnimationFrame(step);
       }
 
       requestAnimationFrame(step);
