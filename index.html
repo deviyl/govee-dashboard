@@ -28,8 +28,9 @@
           const sensor = data[`SENSOR_${i}`];
           if (!sensor) continue;
 
-          const temp = Math.round(sensor.temperature ?? 0);
-          const humidity = Math.round(sensor.humidity ?? 0);
+          // Round temperature to 1 decimal place
+          const temp = parseFloat((sensor.temperature ?? 0).toFixed(1));
+          const humidity = parseFloat((sensor.humidity ?? 0).toFixed(1));
 
           const sensorDiv = document.createElement("div");
           sensorDiv.style.width = "100%";
@@ -63,9 +64,9 @@
 
           container.appendChild(sensorDiv);
 
-          // Animate values
-          animateValue(`temp_${i}`, previousData[`temp_${i}`] ?? temp, temp, 600);
-          animateValue(`hum_${i}`, previousData[`hum_${i}`] ?? humidity, humidity, 600);
+          // Animate values with decimal support
+          animateValue(`temp_${i}`, previousData[`temp_${i}`] ?? temp, temp, 600, 1);
+          animateValue(`hum_${i}`, previousData[`hum_${i}`] ?? humidity, humidity, 600, 1);
 
           previousData[`temp_${i}`] = temp;
           previousData[`hum_${i}`] = humidity;
@@ -75,7 +76,7 @@
       }
     }
 
-    function animateValue(id, start, end, duration) {
+    function animateValue(id, start, end, duration, decimals=0) {
       if (start === end) return;
       const element = document.getElementById(id);
       const range = end - start;
@@ -84,7 +85,7 @@
       function step(timestamp) {
         if (!startTime) startTime = timestamp;
         const progress = Math.min((timestamp - startTime) / duration, 1);
-        const value = Math.round(start + range * progress);
+        const value = (start + range * progress).toFixed(decimals);
         element.textContent = value + (id.startsWith("temp") ? "°F" : "%");
         if (progress < 1) requestAnimationFrame(step);
       }
