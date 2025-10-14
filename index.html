@@ -28,8 +28,8 @@
           const sensor = data[`SENSOR_${i}`];
           if (!sensor) continue;
 
-          const temp = parseFloat(sensor.temperature ?? 0);
-          const humidity = parseInt(sensor.humidity ?? 0);
+          const temp = Math.round(sensor.temperature ?? 0);
+          const humidity = Math.round(sensor.humidity ?? 0);
 
           const sensorDiv = document.createElement("div");
           sensorDiv.style.width = "100%";
@@ -55,27 +55,19 @@
             sensorDiv.style.transform = "scale(1)";
           });
 
-          // Split temperature into whole and decimal
-          const [whole, decimal] = temp.toFixed(1).split(".");
-
           sensorDiv.innerHTML = `
-            <div style="position: relative; font-size: 2.5em; line-height: 1;">
-              <span id="temp_whole_${i}">${whole}</span>
-              <span id="temp_decimal_${i}" style="font-size: 1em; position: absolute; top: 0.2em; right: -1.2em;">.${decimal}°F</span>
-            </div>
+            <div style="font-size: 2.5em; line-height: 1;" id="temp_${i}">${temp}°F</div>
             <div style="width: 60%; height: 2px; background-color: #00796b; margin: 6px 0; border-radius: 1px;"></div>
             <div style="font-size: 1.1em; color: #004d40;" id="hum_${i}">${humidity}%</div>
           `;
 
           container.appendChild(sensorDiv);
 
-          // Animate whole and decimal separately
-          animateValue(`temp_whole_${i}`, previousData[`temp_whole_${i}`] ?? parseInt(whole), parseInt(whole), 600);
-          animateValue(`temp_decimal_${i}`, previousData[`temp_decimal_${i}`] ?? parseInt(decimal), parseInt(decimal), 600, true);
+          // Animate values
+          animateValue(`temp_${i}`, previousData[`temp_${i}`] ?? temp, temp, 600);
           animateValue(`hum_${i}`, previousData[`hum_${i}`] ?? humidity, humidity, 600);
 
-          previousData[`temp_whole_${i}`] = parseInt(whole);
-          previousData[`temp_decimal_${i}`] = parseInt(decimal);
+          previousData[`temp_${i}`] = temp;
           previousData[`hum_${i}`] = humidity;
         }
       } catch (err) {
@@ -83,7 +75,7 @@
       }
     }
 
-    function animateValue(id, start, end, duration, isDecimal=false) {
+    function animateValue(id, start, end, duration) {
       if (start === end) return;
       const element = document.getElementById(id);
       const range = end - start;
@@ -93,11 +85,7 @@
         if (!startTime) startTime = timestamp;
         const progress = Math.min((timestamp - startTime) / duration, 1);
         const value = Math.round(start + range * progress);
-        if (isDecimal) {
-          element.textContent = `.${value}°F`;
-        } else {
-          element.textContent = value;
-        }
+        element.textContent = value + (id.startsWith("temp") ? "°F" : "%");
         if (progress < 1) requestAnimationFrame(step);
       }
 
