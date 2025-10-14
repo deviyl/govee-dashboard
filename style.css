@@ -29,7 +29,7 @@ h1 {
   max-width: 180px;
   aspect-ratio: 1 / 1;
   border-radius: 62px;
-  border: 6px solid #222; /* dark gray / almost black border */
+  border: 4px solid #222; /* dark gray / almost black border */
   display: flex;
   flex-direction: column;
   align-items: center;
