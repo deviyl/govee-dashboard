@@ -33,11 +33,13 @@ exports.handler = async function(event, context) {
 
     return {
       statusCode: 200,
+      headers: { "Access-Control-Allow-Origin": "*" },
       body: JSON.stringify({ temperature: temp, humidity: humidity })
     };
   } catch (err) {
     return {
       statusCode: 500,
+      headers: { "Access-Control-Allow-Origin": "*" },
       body: JSON.stringify({ error: err.message })
     };
   }
