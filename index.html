@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  <h1>Govee Dashboard2</h1>
+  <h1>Govee Dashboard</h1>
   <div id="sensors"></div>
 
   <script>
@@ -16,14 +16,15 @@
     const container = document.getElementById("sensors");
     let previousData = {};
 
-    // Custom labels for sensors (in order)
+    // Custom labels for sensors (adjust as needed)
+    // Custom labels for sensors (adjust as needed)
     const SENSOR_LABELS = [
-      "Living Room",
-      "Kitchen",
-      "Bedroom",
-      "Garage",
-      "Basement",
-      "Office"
+      "Refrigerator",
+      "Freezer",
+      "Garage Fridge",
+      "Eric III",
+      "Emily",
+      "GeauxEngrave"
     ];
 
     async function fetchData() {
@@ -43,19 +44,14 @@
           const sensorDiv = document.createElement("div");
           sensorDiv.className = "sensor-card";
 
-          // Apply temperature-based color tint
+          // Optional: apply temperature-based background
           const color = getTemperatureColor(temp);
           sensorDiv.style.background = `linear-gradient(135deg, ${color.light}, ${color.main})`;
 
-          // Inner HTML structure with top/bottom halves and label at bottom
           sensorDiv.innerHTML = `
-            <div class="sensor-top">
-              <div class="sensor-temp" id="temp_${i}">${temp}°F</div>
-            </div>
-            <div class="sensor-bottom">
-              <div class="sensor-divider"></div>
-              <div class="sensor-humidity" id="hum_${i}">${humidity}%</div>
-            </div>
+            <div class="sensor-temp" id="temp_${i}">${temp}°F</div>
+            <div class="sensor-divider"></div>
+            <div class="sensor-humidity" id="hum_${i}">${humidity}%</div>
             <div class="sensor-label">${SENSOR_LABELS[i - 1] ?? `SENSOR_${i}`}</div>
           `;
 
