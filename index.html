@@ -8,7 +8,7 @@
 </head>
 
 <body>
-  <h1>Govee Dashboard1</h1>
+  <h1>Govee Dashboard2</h1>
   <div id="sensors"></div>
 
   <script>
@@ -18,12 +18,12 @@
 
     // Custom labels for sensors (in order)
     const SENSOR_LABELS = [
-      "Refrigerator",
-      "Freezer",
-      "Garage Fridge",
-      "Eric III",
-      "Emily",
-      "GeauxEngrave"
+      "Living Room",
+      "Kitchen",
+      "Bedroom",
+      "Garage",
+      "Basement",
+      "Office"
     ];
 
     async function fetchData() {
@@ -47,10 +47,15 @@
           const color = getTemperatureColor(temp);
           sensorDiv.style.background = `linear-gradient(135deg, ${color.light}, ${color.main})`;
 
+          // Inner HTML structure with top/bottom halves and label at bottom
           sensorDiv.innerHTML = `
-            <div class="sensor-temp" id="temp_${i}">${temp}°F</div>
-            <div class="sensor-divider"></div>
-            <div class="sensor-humidity" id="hum_${i}">${humidity}%</div>
+            <div class="sensor-top">
+              <div class="sensor-temp" id="temp_${i}">${temp}°F</div>
+            </div>
+            <div class="sensor-bottom">
+              <div class="sensor-divider"></div>
+              <div class="sensor-humidity" id="hum_${i}">${humidity}%</div>
+            </div>
             <div class="sensor-label">${SENSOR_LABELS[i - 1] ?? `SENSOR_${i}`}</div>
           `;
 
@@ -84,13 +89,12 @@
       requestAnimationFrame(step);
     }
 
-    // Map temperature to color palette
     function getTemperatureColor(temp) {
-      if (isNaN(temp)) return { light: "#e0f7fa", main: "#b2ebf2" }; // default
-      if (temp < 60) return { light: "#d0e8ff", main: "#90caf9" };   // cool blues
-      if (temp < 75) return { light: "#e0f7fa", main: "#b2ebf2" };   // neutral aqua
-      if (temp < 85) return { light: "#fff3e0", main: "#ffcc80" };   // warm orange
-      return { light: "#ffebee", main: "#ef9a9a" };                  // hot red
+      if (isNaN(temp)) return { light: "#e0f7fa", main: "#b2ebf2" };
+      if (temp < 60) return { light: "#d0e8ff", main: "#90caf9" };
+      if (temp < 75) return { light: "#e0f7fa", main: "#b2ebf2" };
+      if (temp < 85) return { light: "#fff3e0", main: "#ffcc80" };
+      return { light: "#ffebee", main: "#ef9a9a" };
     }
 
     fetchData();
