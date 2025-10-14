@@ -1,6 +1,12 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Govee Dashboard</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
   <h1>Govee Dashboard</h1>
   <div id="sensors"></div>
@@ -26,7 +32,6 @@
 
           const sensorDiv = document.createElement("div");
           sensorDiv.className = "sensor-card";
-
           sensorDiv.innerHTML = `
             <div class="sensor-temp" id="temp_${i}">${temp}°F</div>
             <div class="sensor-divider"></div>
@@ -35,6 +40,7 @@
 
           container.appendChild(sensorDiv);
 
+          // animate temperature and humidity values smoothly
           animateValue(`temp_${i}`, previousData[`temp_${i}`] ?? temp, temp, 600, 1);
           animateValue(`hum_${i}`, previousData[`hum_${i}`] ?? humidity, humidity, 600, 1);
 
@@ -46,7 +52,7 @@
       }
     }
 
-    function animateValue(id, start, end, duration, decimals=0) {
+    function animateValue(id, start, end, duration, decimals = 0) {
       if (start === end) return;
       const element = document.getElementById(id);
       const range = end - start;
@@ -64,6 +70,7 @@
     }
 
     fetchData();
-    setInterval(fetchData, 60000);
+    setInterval(fetchData, 60000); // refresh every 60 seconds
   </script>
 </body>
+</html>
