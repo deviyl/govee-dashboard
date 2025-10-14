@@ -1,0 +1,61 @@
+body {
+  font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  margin: 40px;
+  background-color: #f4f4f4;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+#sensors {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 20px;
+  justify-items: center;
+  align-items: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.sensor-card {
+  width: 100%;
+  max-width: 180px;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  color: #00796b;
+  transition: transform 0.2s ease;
+}
+
+.sensor-card:hover {
+  transform: scale(1.05);
+}
+
+.sensor-temp {
+  font-size: 2.5em;
+  line-height: 1;
+}
+
+.sensor-divider {
+  width: 60%;
+  height: 2px;
+  background-color: #00796b;
+  margin: 6px 0;
+  border-radius: 1px;
+}
+
+.sensor-humidity {
+  font-size: 1.1em;
+  color: #004d40;
+}
