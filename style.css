@@ -32,7 +32,7 @@ body::before {
   justify-items: center;
   align-items: center;
   max-width: 600px;
-  margin: 30 auto 40px;
+  margin: 30px auto 40px;
 }
 
 /* Sensor card with multi-border */
