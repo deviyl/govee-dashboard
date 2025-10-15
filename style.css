@@ -2,10 +2,11 @@
 body {
   font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
   margin: 0;
-  padding: 0;
+  padding-top: 30px;
   height: 100vh;
   background-color: #01015a; /* fallback color */
   position: relative;
+  overflow: hidden;
 }
 
 /* Background image overlay with opacity */
@@ -33,7 +34,7 @@ body::before {
   justify-items: center;
   align-items: center;
   max-width: 600px;
-  margin: 30px auto 40px;
+  margin: 0 auto 40px;
 }
 
 /* Sensor card with multi-border */
